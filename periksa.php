@@ -10,6 +10,7 @@ include_once("koneksi.php");
         $id_dokter = '';
         $tgl_periksa= '';
         $catatan= '';
+        $obat= '';
         if (isset ($_GET['id'])) {
             $ambil = mysqli_query($mysqli, "SELECT * FROM periksa where id ='" . $_GET['id'] . "'");
             while ($row = mysqli_fetch_array($ambil)) {
@@ -17,6 +18,7 @@ include_once("koneksi.php");
                 $id_dokter = $row ['id_dokter'];
                 $tgl_periksa = $row ['tgl_periksa'];
                 $catatan = $row ['catatan'];
+                $obat = $row ['obat'];
             }
     ?>
         <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
@@ -78,6 +80,13 @@ include_once("koneksi.php");
         <input type="text" class="form-control" name="catatan" placeholder="catatan" value="<?php echo $catatan ?>">
     </div>
     <div class="mb-3">
+        <label for="inputnama" class="form-label fw-bold">
+            obat
+        </label>
+        <input type="text" class="form-control" name="obat" placeholder="obat" value="<?php echo $obat ?>">
+    </div>
+    
+    <div class="mb-3">
         <button type="submit" class="btn btn-primary rounded-pill px-3" name="simpan">Simpan</button>
     </div>
 </form>
@@ -94,6 +103,7 @@ include_once("koneksi.php");
             <th scope="col">dokter</th>
             <th scope="col">tanggal periksa</th>
             <th scope="col">catatan</th>
+            <th scope="col">obat</th>
             <th scope="col">Aksi</th>
         </tr>
     </thead>
@@ -113,6 +123,8 @@ while ($data = mysqli_fetch_array($result)) {
         <td><?php echo $data['nama_dokter'] ?></td>
         <td><?php echo $data['tgl_periksa'] ?></td>
         <td><?php echo $data['catatan'] ?></td>
+        <td><?php echo $data['obat'] ?></td>
+
         <td>
             <a class="btn btn-success rounded-pill px-3" 
             href="index.php?page=periksa&id=<?php echo $data['id'] ?>">
@@ -134,16 +146,18 @@ if (isset($_POST['simpan'])) {
                                         id_pasien= '" . $_POST['id_pasien'] . "',
                                         id_dokter = '" . $_POST['id_dokter'] . "',
                                         tgl_periksa= '" . $_POST['tgl_periksa'] . "',
-                                        catatan= '" . $_POST['catatan'] . "'
+                                        catatan= '" . $_POST['catatan'] . "',
+                                        obat= '" . $_POST['obat'] . "'
                                         WHERE
                                         id = '" . $_POST['id'] . "'");
     } else {
-        $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_pasien,id_dokter,tgl_periksa,catatan) 
+        $tambah = mysqli_query($mysqli, "INSERT INTO periksa(id_pasien,id_dokter,tgl_periksa,catatan,obat) 
                                         VALUES ( 
                                             '" . $_POST['id_pasien'] . "',
                                             '" . $_POST['id_dokter'] . "',
                                             '" . $_POST['tgl_periksa'] . "',
-                                            '" . $_POST['catatan'] . "'
+                                            '" . $_POST['catatan'] . "',
+                                            '" . $_POST['obat'] . "',
                                             )");
     }
 
