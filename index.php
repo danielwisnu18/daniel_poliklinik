@@ -1,78 +1,87 @@
 <?php
-include_once("koneksi.php");
-?>
+session_start();
 
+if (isset($_GET['page'])) {
+    if ($_GET['page'] === 'dokter' || $_GET['page'] === 'pasien' || $_GET['page'] === 'periksa') {
+        if (!isset($_SESSION['username'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Poliklinik</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet">
 </head>
-
 <body>
-<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
-  <div class="container-fluid" >
-    <a class="navbar-brand" href="#">
-      Sistem Informasi Poliklinik
-    </a>
-    <button class="navbar-toggler"
-    type="button" data-bs-toggle="collapse"
-    data-bs-target="#navbarNavDropdown"
-    aria-controls="navbarNavDropdown" aria-expanded="false"
-    aria-label="Toggle navigation">
-    </button>
-    
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="index.php">
-            Home
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button"
-          data-bs-toggle="dropdown" aria-expanded="false">
-            Data Master
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="index.php?page=dokter">
-                Dokter
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="index.php?page=pasien">
-                Pasien
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" 
-          href="index.php?page=periksa">
-            Periksa
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Sistem Informasi Poliklinik</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=dokter">Dokter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=pasien">Pasien</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=periksa">Periksa</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                        echo '<a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>';
+                    } else {
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="index.php?page=login"><i class="fas fa-sign-in-alt"></i> Login</a>';
+                        echo '</li>';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="index.php?page=register"><i class="fas fa-user-plus"></i> Register</a>';
+                        echo '</li>';
+                    }
+                    ?>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-<main role="main" class="container">
-    <?php
+    <main role="main" class="container">
+        <?php if (!isset($_GET['page']) || $_GET['page'] === 'index') { ?>
+            <div class="text-center">
+                <h1>Selamat Datang di Sistem Informasi Poliklinik</h1>
+            </div>
+        <?php } ?>
+        <div style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('img/spidergwen.png'); background-size: cover; background-position: center;">
+            <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 36px; text-align: center; color: black; text-shadow: 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white, 0 0 5px white;">
+                daniel wisnu<br><br>
+              
+            </p>
+        </div>
+        <?php
     if (isset($_GET['page'])) {
     ?>
-        <h2><?php echo ucwords($_GET['page']) ?></h2>
+        <?php($_GET['page']) ?>
     <?php
         include($_GET['page'] . ".php");
-    } else {
-        echo "Selamat Datang di Sistem Informasi Poliklinik";
     }
-    ?>
-</main>
+        ?>
 
 </body>
 
